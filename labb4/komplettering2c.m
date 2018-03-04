@@ -12,22 +12,22 @@ clf
 % godtyckligt tal för Neumann aproximation
 r = 14;
 
-% antalet iterationer (sätt till lägre än 500 för tydligare Neumann-graf och snabbare beräkningstider)
-max = 500;
+% antalet iterationer (sätt till lägre än 500 för tydligare Neumann-graf och avsevärt snabbare beräkningstider)
+iterations = 500;
 
 % vektor med en tiden det tar för varje uträkning m.h.a. Gauss
-gTimeVector = [0];
+gTimeVector = zeros(iterations, 1)
 
 % vektor med en tiden det tar för varje uträkning m.h.a. Neumann
-nTimeVector = [0];
+nTimeVector = zeros(iterations, 1);
 
 % vektor med alla relativa felen
-relFelVector = [0];
+relFelVector = zeros(iterations, 1);
 
 % vektor med talen 0 t.o.m. maxtalet
-iVector = 0:max;
+iVector = 1:iterations;
 
-for i=1:max
+for i=1:iterations
     % skapa en slumpmässig kvadrat-matris och en slumpmässig vektor, båda med storleken i
     B = randMatrix(i);
     b = randVector(i);
@@ -36,16 +36,16 @@ for i=1:max
     f1 = @() gauss(B, b);
     gaussTime = timeit(f1, 1);
     % spara tiden som det tar att utföra beräkningen i den matchande vektorn
-    gTimeVector = [gTimeVector gaussTime];
+    gTimeVector(i, 1) = gaussTime;
 
     % timeit initiering
     f2 = @() neumann(B, b, r);
     neumannTime = timeit(f2, 1);
     % spara tiden som det tar att utföra beräkningen i den matchande vektorn
-    nTimeVector = [nTimeVector neumannTime];
+    nTimeVector(i, 1) = neumannTime;
 
     % räkna ut det relativa felet och spara det i den matchande vektorn
-    relFelVector = [relFelVector relativtFel(B, b, r)];
+    relFelVector(i, 1) = relativtFel(B, b, r);
     % printa ut i så att man vet hur långt man har kommit (ZZZzzzzzzzzz)
     i
 end
@@ -61,7 +61,7 @@ subplot(1,3,3)
 plot(iVector, gTimeVector, '-')
 
 % samma axel som Neumann, för att göra skillnaden mellan de två tydligare
-axis([0 i 0 maxY]);
+axis([1 i 0 maxY]);
 
 title("Gauss");
 xlabel("Matrix size");
@@ -76,7 +76,7 @@ plot(iVector, nTimeVector, '-')
 % (vid 500 iterationer kan det vara svårt att se grafen eftersom att Gauss tar så mycket mer tid, 
 % men om man har olika skala på de två så blir det väldigt otydligt vad skillnaden mellan dem är, 
 % därför valde vi att ha det på detta sätt.)
-axis([0 i 0 maxY]);
+axis([1 i 0 maxY]);
 
 title("Neumann");
 xlabel("Matrix size");
@@ -86,7 +86,7 @@ subplot(1,3,1)
 % Det relativa felet som funktion av iterationen
 plot(iVector, relFelVector, '-')
 % en godtycklig skalning som det relativa felet alltid borde rymmas i
-axis([0 i 0 10^(-4)]);
+axis([1 i 0 10^(-4)]);
 
 title("Relativt fel");
 xlabel("Matrix size");
