@@ -16,7 +16,7 @@ r = 14;
 iterations = 500;
 
 % vektor med en tiden det tar för varje uträkning m.h.a. Gauss
-gTimeVector = zeros(iterations, 1)
+gTimeVector = zeros(iterations, 1);
 
 % vektor med en tiden det tar för varje uträkning m.h.a. Neumann
 nTimeVector = zeros(iterations, 1);
