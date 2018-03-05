@@ -10,7 +10,7 @@ A = [3 5; 1 8];
 
 % eig(A) = [2.1459 ; 8.8541]
 
-inverse_iteration(A, 6, 2)
+inverse_iteration(A, 6, 3)
 
 function out = inverse_iteration(A, p, r)
     iterations = 0;
